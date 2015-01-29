@@ -93,7 +93,7 @@ public class ProcesoCliente implements Runnable, ListDataListener {
             } while (!mensajeRecibido.ultimoMsj);
             fos.close();
             System.out.println("Se termino de pasar el archivo");
-            listaArchivos.add(rutaAbsoluta);
+            listaArchivos.add(archivo.nombreArchivo);
             lista.addElement(rutaAbsoluta);           
         } catch (FileNotFoundException ex) {
             System.out.println(ex.toString());
