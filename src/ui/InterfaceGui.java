@@ -3,6 +3,7 @@ package ui;
 import Server.ui.ServerMain;
 import comunication.Archivo;
 import comunication.DatosCom;
+import comunication.Message;
 import java.util.List;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,6 +12,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import ui.jTreeLib.JTreeFile;
@@ -26,6 +30,7 @@ public class InterfaceGui extends javax.swing.JFrame {
     DatosCom datos;
     ObjectOutputStream output;
     ObjectInputStream input;
+    public static String rutaDestino; 
 
     /**
      * Inicializacion de la aplicacion
@@ -62,6 +67,11 @@ public class InterfaceGui extends javax.swing.JFrame {
         jLabel1.setText("Compartir Archivos");
 
         jButton1.setText("Descargar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 51));
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -186,6 +196,26 @@ public class InterfaceGui extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser(); 
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int opcion = fileChooser.showDialog(this, "Elegir"); 
+        if(opcion==JFileChooser.APPROVE_OPTION)
+        {
+            File archivo = fileChooser.getSelectedFile(); 
+            rutaDestino = archivo.getPath();
+        }
+        System.out.println("Seleccionaste " + jList1.getSelectedValue().toString());
+        Message msg = new Message(); 
+        msg.ruta = jList1.getSelectedValue().toString(); 
+        try {
+            output.writeObject(msg);
+        } catch (IOException ex) {
+            Logger.getLogger(InterfaceGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void enviaArchivo(String nombreArchivo, ObjectOutputStream oos, String nombre, long tam) {
         String key = nombreArchivo;

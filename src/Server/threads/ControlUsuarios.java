@@ -1,6 +1,7 @@
 
 package Server.threads;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -36,6 +37,9 @@ public class ControlUsuarios implements Runnable {
         try { 
             server = new ServerSocket(puerto);
             System.out.println("Esperando conexiones");
+            File nuevo = new File(ruta); 
+            for(int i=0;i<nuevo.list().length;i++)
+                listaArchivos.add(nuevo.list()[i]);
             while(activo)
             {
                 Socket socket = server.accept(); 
